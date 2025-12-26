@@ -1,4 +1,4 @@
-package com.hissee.restapi.studentmanagementsystem.model;
+package com.hissee.restapi.studentmanagementsystem.entity;
 
 
 import jakarta.persistence.*;

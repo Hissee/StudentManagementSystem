@@ -17,17 +17,6 @@ public class Student {
     @Column
     private String course;
 
-    public Student(){
-
-    }
-
-    public Student (String name, String email, String course){
-        super();
-        this.name = name;
-        this.email = email;
-        this.course = course;
-    }
-
     public int getRoll_no(){
         return roll_no;
     }

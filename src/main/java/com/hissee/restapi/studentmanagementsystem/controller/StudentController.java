@@ -2,41 +2,45 @@ package com.hissee.restapi.studentmanagementsystem.controller;
 
 
 import com.hissee.restapi.studentmanagementsystem.entity.Student;
-import com.hissee.restapi.studentmanagementsystem.repository.StudentRepository;
+import com.hissee.restapi.studentmanagementsystem.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
+@RequestMapping("/students")
 public class StudentController {
 
     @Autowired
-    StudentRepository repository;
-    //get all the students
-    //localhost:8080/students
-    @GetMapping("/students")
-    public List<Student> getAllStudents(){
-        List<Student> students = repository.findAll();
-        return students;
+    StudentService service;
+
+    @PostMapping
+    public Student postStudent(@RequestBody Student student){
+
+        if (student.getName().length() < 3){
+            throw new IllegalArgumentException("Name should be atleast 3 letters");
+        }
+        return service.createStudent(student);
     }
 
-    @GetMapping("/student/{id}/")
-    public Student getStudent(@PathVariable int id){
-        Student student = repository.findById(id).get();
-        return student;
+    @GetMapping
+    public List<Student> getStudents(){
+        return service.readStudents();
     }
 
-    @PostMapping("/student/add")
-    public void addStudent(@RequestBody Student student){
-        repository.save(student);
+    @GetMapping("{id}")
+    public Student getStudentById(@PathVariable int id){
+        return service.readStudentById(id);
     }
 
-    @DeleteMapping("/student/delete/{id}")
+    @PutMapping("{id}")
+    public Student putStudent(@PathVariable int id, Student updatedStudent){
+        return service.updateStudent(id, updatedStudent);
+    }
+
+    @DeleteMapping("{id}")
     public void deleteStudent(@PathVariable int id){
-        Student student = repository.findById(id).get();
-        repository.delete(student);
+        service.deleteStudent(id);
     }
-
 }
